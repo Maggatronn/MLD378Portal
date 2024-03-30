@@ -10,43 +10,65 @@
 
     <script>
 
-        // const base = require('airtable').base('appVD4QU6UY9b8oHD');
-        // EXAMPLE USING CUSTOM CONFIGURATION
-        // var Airtable = require('airtable');
-        // Airtable.configure({
-        //     endpointUrl: 'https://api.airtable.com',
-        //     apiKey: 'YOUR_SECRET_API_TOKEN'
-        // });
-        // var base = Airtable.base('appVD4QU6UY9b8oHD');
-      // tblkGG5SZXtyK2UUq
-      
-        // Replace 'YOUR_API_KEY' and 'YOUR_BASE_ID' with your Airtable API key and base ID
-        const apiKey = 'tblkGG5SZXtyK2UUq';
-        const baseId = 'appVD4QU6UY9b8oHD';
-        const tableName = 'Organizers';
-
-        // Construct the URL for the API request
-        const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-
-        // Make the API request using the Fetch API
-        fetch(url, {
-            headers: {
-                Authorization: `Bearer ${apiKey}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Process the data and display it on the page
-            const dataList = document.getElementById('data-list');
-            data.records.forEach(record => {
-                const listItem = document.createElement('li');
-                listItem.textContent = record.fields['Name']; // Change 'Name' to the name of the field you want to display
-                dataList.appendChild(listItem);
+        var Airtable = require('airtable');
+        var base = new Airtable({apiKey: 'patzPI1tVXG3NwYx1.99e930840df0cd3168e32ab28799f1294a0bde64f2fa6f502d94f81287b1bcb1'}).base('appVD4QU6UY9b8oHD');
+        
+        base('Organizers').select({
+            // Selecting the first 3 records in Grid view:
+            maxRecords: 3,
+            view: "Grid view"
+        }).eachPage(function page(records, fetchNextPage) {
+            // This function (`page`) will get called for each page of records.
+        
+            records.forEach(function(record) {
+                console.log('Retrieved', record.get('Name'));
             });
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
+        
+            // To fetch the next page of records, call `fetchNextPage`.
+            // If there are more records, `page` will get called again.
+            // If there are no more records, `done` will get called.
+            fetchNextPage();
+        
+        }, function done(err) {
+            if (err) { console.error(err); return; }
         });
+      //   // const base = require('airtable').base('appVD4QU6UY9b8oHD');
+      //   // EXAMPLE USING CUSTOM CONFIGURATION
+      //   // var Airtable = require('airtable');
+      //   // Airtable.configure({
+      //   //     endpointUrl: 'https://api.airtable.com',
+      //   //     apiKey: 'YOUR_SECRET_API_TOKEN'
+      //   // });
+      //   // var base = Airtable.base('appVD4QU6UY9b8oHD');
+      // // tblkGG5SZXtyK2UUq
+      
+      //   // Replace 'YOUR_API_KEY' and 'YOUR_BASE_ID' with your Airtable API key and base ID
+      //   const apiKey = 'tblkGG5SZXtyK2UUq';
+      //   const baseId = 'appVD4QU6UY9b8oHD';
+      //   const tableName = 'Organizers';
+
+      //   // Construct the URL for the API request
+      //   const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+
+      //   // Make the API request using the Fetch API
+      //   fetch(url, {
+      //       headers: {
+      //           Authorization: `Bearer ${apiKey}`
+      //       }
+      //   })
+      //   .then(response => response.json())
+      //   .then(data => {
+      //       // Process the data and display it on the page
+      //       const dataList = document.getElementById('data-list');
+      //       data.records.forEach(record => {
+      //           const listItem = document.createElement('li');
+      //           listItem.textContent = record.fields['Name']; // Change 'Name' to the name of the field you want to display
+      //           dataList.appendChild(listItem);
+      //       });
+      //   })
+      //   .catch(error => {
+      //       console.error('Error fetching data:', error);
+      //   });
     </script>
 </body>
 </html>
