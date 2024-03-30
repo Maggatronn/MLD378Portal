@@ -1,1 +1,52 @@
-<h1>HLLOOOO</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airtable API Example</title>
+</head>
+<body>
+    <h1>Airtable Data</h1>
+    <ul id="data-list"></ul>
+
+    <script>
+
+        const base = require('airtable').base('appVD4QU6UY9b8oHD');
+        // EXAMPLE USING CUSTOM CONFIGURATION
+        // var Airtable = require('airtable');
+        // Airtable.configure({
+        //     endpointUrl: 'https://api.airtable.com',
+        //     apiKey: 'YOUR_SECRET_API_TOKEN'
+        // });
+        // var base = Airtable.base('appVD4QU6UY9b8oHD');
+      // tblkGG5SZXtyK2UUq
+      
+        // Replace 'YOUR_API_KEY' and 'YOUR_BASE_ID' with your Airtable API key and base ID
+        const apiKey = 'tblkGG5SZXtyK2UUq';
+        const baseId = 'appVD4QU6UY9b8oHD';
+        const tableName = 'Organizers';
+
+        // Construct the URL for the API request
+        const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+
+        // Make the API request using the Fetch API
+        fetch(url, {
+            headers: {
+                Authorization: `Bearer ${apiKey}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Process the data and display it on the page
+            const dataList = document.getElementById('data-list');
+            data.records.forEach(record => {
+                const listItem = document.createElement('li');
+                listItem.textContent = record.fields['Name']; // Change 'Name' to the name of the field you want to display
+                dataList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    </script>
+</body>
+</html>
